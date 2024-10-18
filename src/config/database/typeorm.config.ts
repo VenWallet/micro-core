@@ -1,23 +1,30 @@
-import * as dotenv from 'dotenv';
-dotenv.config({ path: '.env.core' });
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { DataSourceOptions } from 'typeorm';
+import { EnvironmentVariables } from '../env';
 
-const config: DataSourceOptions = {
-  type: 'postgres',
-  host: process.env.HOST_ORM,
-  port: Number(process.env.PORT_ORM),
-  username: process.env.USER_ORM,
-  password: process.env.PASSWORD_ORM,
-  database: process.env.DATABASE_ORM,
-  entities: [__dirname + '/../../modules/**/entities/*{.ts,.js}'],
-  migrations: [
-    __dirname + `/../../${process.env.NODE_ENV === 'production' ? 'migrations.prod' : 'migrations.dev'}/*.ts`,
-  ],
-  migrationsRun: true,
-  synchronize: true,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-};
+@Injectable()
+export class DatabaseConfig {
+  static getDataSourceOptions(): DataSourceOptions {
+    const configService = new ConfigService<EnvironmentVariables>();
 
-export default config;
+    const environment = configService.get<string>('NODE_ENV');
+    const migrationsPath = environment === 'production' ? 'migrations.prod' : 'migrations.dev';
+
+    return {
+      type: 'postgres',
+      host: configService.get<string>('HOST_ORM'),
+      port: configService.get<number>('PORT_ORM'),
+      username: configService.get<string>('USER_ORM'),
+      password: configService.get<string>('PASSWORD_ORM'),
+      database: configService.get<string>('DATABASE_ORM'),
+      entities: [__dirname + '/../../modules/**/entities/*{.ts,.js}'],
+      migrations: [__dirname + `/../../${migrationsPath}/*.ts`],
+      migrationsRun: true,
+      synchronize: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    };
+  }
+}

@@ -1,6 +1,8 @@
 import { DataSource } from 'typeorm';
-import config from './typeorm.config';
+import { DatabaseConfig } from './typeorm.config';
+import { ConfigService } from '@nestjs/config';
+import { EnvironmentVariables } from '../env';
 
-const dataSource = new DataSource(config);
+const dataSource = new DataSource(DatabaseConfig.getDataSourceOptions());
 
 export default dataSource;
