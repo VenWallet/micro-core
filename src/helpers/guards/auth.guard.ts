@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: '.env.core' });
 
 @Injectable()
 export class AuthGuard implements CanActivate {
