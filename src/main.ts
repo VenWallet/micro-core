@@ -5,7 +5,6 @@ import { ValidationPipe } from '@nestjs/common';
 import * as morgan from 'morgan';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from './config/env';
-// process.loadEnvFile('.env.core');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
