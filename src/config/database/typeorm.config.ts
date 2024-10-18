@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: '.env.core' });
 import { DataSourceOptions } from 'typeorm';
 
 const config: DataSourceOptions = {

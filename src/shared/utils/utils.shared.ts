@@ -1,4 +1,6 @@
 const nearSEED = require('near-seed-phrase');
+import * as dotenv from 'dotenv';
+dotenv.config({ path: '.env.core' });
 
 export class UtilsShared {
   static validateEmail = (email: string) => {
