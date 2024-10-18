@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-import { DatabaseConfig } from './typeorm.config';
+import { DatabaseConfig } from './database.config';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from '../env';
 

@@ -6,7 +6,7 @@ import { AppConfigModule } from './config/app.config';
 import { AppController } from './app.controller';
 import { UserModule } from './modules/user/user.module';
 import { HttpCustomModule } from './shared/http/http.module';
-import { DatabaseConfig } from './config/database/typeorm.config';
+import { DatabaseConfig } from './config/database/database.config';
 
 @Module({
   imports: [
