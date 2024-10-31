@@ -5,7 +5,7 @@ import { IsString, IsNotEmpty, IsOptional, IsBoolean, IsEnum, IsNumber, IsEmail 
 export class UserDto {
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   username: string;
 
   @ApiProperty()
