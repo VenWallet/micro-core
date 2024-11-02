@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
-import { ImportUserDto, UpdateUserDto, UserDto } from './dto/user.dto';
+import { UpdateUserDto, UserDto } from './dto/user.dto';
 
 @ApiTags('User')
 @Controller('user')
@@ -13,10 +13,10 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @Post('import')
-  import(@Body() importUserDto: ImportUserDto) {
-    return this.userService.import(importUserDto);
-  }
+  // @Post('import')
+  // import(@Body() importUserDto: ImportUserDto) {
+  //   return this.userService.import(importUserDto);
+  // }
 
   @Get()
   findAll() {

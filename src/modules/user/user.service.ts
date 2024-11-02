@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable, InternalServerErrorException, No
 import { ExceptionHandler } from 'src/helpers/handlers/exception.handler';
 import { UserRepository } from './repositories/user.repository';
 import { UserEntity } from './entities/user.entity';
-import { ImportUserDto, UpdateUserDto, UserDto } from './dto/user.dto';
+import { UpdateUserDto, UserDto } from './dto/user.dto';
 import { HttpCustomService } from 'src/shared/http/http.service';
 
 @Injectable()
@@ -45,37 +45,37 @@ export class UserService {
     }
   }
 
-  async import(importUserDto: ImportUserDto) {
-    try {
-      const user = await this.userRepository.findOne(importUserDto.userId);
+  // async import(importUserDto: ImportUserDto) {
+  //   try {
+  //     const user = await this.userRepository.findOne(importUserDto.userId);
 
-      if (!user) {
-        throw new NotFoundException('User not found');
-      }
+  //     if (!user) {
+  //       throw new NotFoundException('User not found');
+  //     }
 
-      const body = {
-        mnemonic: importUserDto.mnemonic,
-        userId: importUserDto.userId,
-      };
+  //     const body = {
+  //       mnemonic: importUserDto.mnemonic,
+  //       userId: importUserDto.userId,
+  //     };
 
-      const response = await this.httpService.request<any>({
-        method: 'POST',
-        url: 'http://micro-blockchain:3000/api/blockchain/import-wallets',
-        body,
-      });
+  //     const response = await this.httpService.request<any>({
+  //       method: 'POST',
+  //       url: 'http://micro-blockchain:3000/api/blockchain/import-wallets',
+  //       body,
+  //     });
 
-      if (!response.data || typeof response.data.length !== 'number') {
-        throw new InternalServerErrorException('Failed to import wallets');
-      }
+  //     if (!response.data || typeof response.data.length !== 'number') {
+  //       throw new InternalServerErrorException('Failed to import wallets');
+  //     }
 
-      return {
-        ...user,
-        credencials: response.data,
-      };
-    } catch (error) {
-      throw new ExceptionHandler(error);
-    }
-  }
+  //     return {
+  //       ...user,
+  //       credencials: response.data,
+  //     };
+  //   } catch (error) {
+  //     throw new ExceptionHandler(error);
+  //   }
+  // }
 
   async findAll(): Promise<UserEntity[]> {
     try {

@@ -23,4 +23,7 @@ export class EnvironmentVariables {
 
   @IsInt()
   PORT_ORM!: number;
+
+  @IsString()
+  JWT_SECRET!: string;
 }

@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { UserModule } from './modules/user/user.module';
 import { HttpCustomModule } from './shared/http/http.module';
 import { DatabaseConfig } from './config/database/database.config';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { DatabaseConfig } from './config/database/database.config';
     CacheModule.register({ isGlobal: true }),
     TypeOrmModule.forRoot(DatabaseConfig.getDataSourceOptions()),
     HttpCustomModule,
+    AuthModule,
     UserModule,
   ],
   controllers: [AppController],
