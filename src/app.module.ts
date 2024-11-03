@@ -8,6 +8,7 @@ import { UserModule } from './modules/user/user.module';
 import { HttpCustomModule } from './shared/http/http.module';
 import { DatabaseConfig } from './config/database/database.config';
 import { AuthModule } from './modules/auth/auth.module';
+import { MovementModule } from './modules/movement/movement.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AuthModule } from './modules/auth/auth.module';
     HttpCustomModule,
     AuthModule,
     UserModule,
+    MovementModule,
   ],
   controllers: [AppController],
   providers: [],

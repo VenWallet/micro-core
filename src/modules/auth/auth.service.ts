@@ -4,12 +4,17 @@ import { HttpCustomService } from '../../shared/http/http.service';
 import { UserService } from '../user/user.service';
 import { ImportFromMnemonicDto, ImportFromPkDto } from './dto/auth.dto';
 import { log } from 'console';
+import { MovementService } from '../movement/movement.service';
+import { MovementTypeEnum } from '../movement/enums/movementType.enum';
+import { MovementDto } from '../movement/dto/movement.dto';
+import { StatusEnum } from '../movement/enums/status.enum';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly movementService: MovementService,
     private readonly httpService: HttpCustomService,
   ) {}
 
@@ -49,6 +54,16 @@ export class AuthService {
       mnemonic: importFromMnemonicDto.mnemonic,
       credentials: response.data,
     };
+
+    const movement: MovementDto = {
+      userId: user.id,
+      movementType: MovementTypeEnum.LOGIN,
+      movementDate: new Date(),
+      status: StatusEnum.COMPLETED,
+      description: payload.loginMethod,
+    };
+
+    this.movementService.create(movement);
 
     return {
       ...user,
