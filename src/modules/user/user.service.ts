@@ -4,12 +4,14 @@ import { UserRepository } from './repositories/user.repository';
 import { UserEntity } from './entities/user.entity';
 import { UpdateUserDto, UserDto } from './dto/user.dto';
 import { HttpCustomService } from 'src/shared/http/http.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly httpService: HttpCustomService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async create(createUserDto: UserDto) {
@@ -32,8 +34,17 @@ export class UserService {
           throw new InternalServerErrorException('Failed to create wallets');
         }
 
+        const payload = {
+          userId: user.id,
+          loginMethod: 'MNEMONIC',
+          mnemonic: createUserDto.mnemonic,
+          credentials: response.data,
+        };
+
         return {
           ...user,
+          loginMethod: payload.loginMethod,
+          token: await this.jwtService.signAsync(payload, { expiresIn: '7d' }),
           credencials: response.data,
         };
       } catch (error) {
