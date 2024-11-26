@@ -20,6 +20,11 @@ export class UserDto {
 
   @ApiProperty()
   @IsString()
+  @IsOptional()
+  copydrive: string;
+
+  @ApiProperty()
+  @IsString()
   @IsNotEmpty()
   mnemonic: string;
 }

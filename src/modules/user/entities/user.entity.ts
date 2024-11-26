@@ -23,4 +23,9 @@ export class UserEntity extends BaseEntity {
     nullable: true,
   })
   name!: string;
+
+  @Column({
+    nullable: true,
+  })
+  copydrive!: string;
 }
