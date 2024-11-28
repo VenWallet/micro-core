@@ -6,6 +6,7 @@ import * as morgan from 'morgan';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from './config/env';
 import { MailService } from './shared/mail/mail.service';
+import { NotificationService } from './modules/notification/notification.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -36,9 +37,9 @@ async function bootstrap() {
 
   console.log(`Server is running on ${url}`);
 
-  // const mailService = app.get(MailService);
+  // const service = app.get(NotificationService);
 
-  // await mailService.sendOtpEmail('ochandoa00@gmail.com');
+  // await service.sendOtp('ochandoa00@gmail.com', '123456');
 }
 
 bootstrap();

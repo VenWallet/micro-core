@@ -21,11 +21,11 @@ import { EnvironmentVariables } from 'src/config/env';
           },
         },
         defaults: {
-          from: `"Venwallet" <${config.get('MAIL_USER')}>`,
+          from: `"Venwallet" <developer@dvconsultores.com>`,
         },
         template: {
           dir: join(__dirname, 'templates'),
-          adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
+          adapter: new HandlebarsAdapter(),
           options: {
             strict: true,
           },
