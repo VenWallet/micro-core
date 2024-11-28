@@ -21,7 +21,7 @@ import { EnvironmentVariables } from 'src/config/env';
           },
         },
         defaults: {
-          from: `"Venwallet" <developer@dvconsultores.com>`,
+          from: `"Venwallet" <${config.get('MAIL_FROM')}>`,
         },
         template: {
           dir: join(__dirname, 'templates'),

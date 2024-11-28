@@ -35,4 +35,7 @@ export class EnvironmentVariables {
 
   @IsString()
   MAIL_PASSWORD!: string;
+
+  @IsString()
+  MAIL_FROM!: string;
 }
