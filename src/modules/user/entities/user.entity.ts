@@ -1,17 +1,26 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn, ManyToMany, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  BaseEntity,
+  CreateDateColumn,
+  ManyToMany,
+  OneToMany,
+  UpdateDateColumn,
+} from 'typeorm';
 import { NetworksEnum } from '../enums/networks.enum';
 import { IndexEnum } from '../enums/index.enum';
 
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  id: string;
 
   @Column({
     nullable: true,
     unique: true,
   })
-  username!: string;
+  username: string;
 
   @Column({
     nullable: false,
@@ -22,10 +31,22 @@ export class UserEntity extends BaseEntity {
   @Column({
     nullable: true,
   })
-  name!: string;
+  name: string;
 
   @Column({
     nullable: true,
   })
-  copydrive!: string;
+  copydrive: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  otp: string | null;
+
+  @Column({ nullable: true, type: 'timestamp' })
+  otpExpiration: Date | null;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

@@ -1,10 +1,19 @@
-import { HttpException, HttpStatus, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { ExceptionHandler } from 'src/helpers/handlers/exception.handler';
 import { UserRepository } from './repositories/user.repository';
 import { UserEntity } from './entities/user.entity';
-import { UpdateUserDto, UserDto } from './dto/user.dto';
+import { GenerateOtpDto, UpdateUserDto, UserDto } from './dto/user.dto';
 import { HttpCustomService } from 'src/shared/http/http.service';
 import { JwtService } from '@nestjs/jwt';
+import { UtilsShared } from 'src/shared/utils/utils.shared';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class UserService {
@@ -12,6 +21,7 @@ export class UserService {
     private readonly userRepository: UserRepository,
     private readonly httpService: HttpCustomService,
     private readonly jwtService: JwtService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async create(createUserDto: UserDto) {
@@ -49,7 +59,7 @@ export class UserService {
         };
       } catch (error) {
         await this.userRepository.remove(user.id);
-        throw new InternalServerErrorException('Failed to create wallets');
+        throw new ExceptionHandler(error);
       }
     } catch (error) {
       throw new ExceptionHandler(error);
@@ -110,6 +120,20 @@ export class UserService {
     }
   }
 
+  async findByEmail(email: string): Promise<UserEntity> {
+    try {
+      const userFound = await this.userRepository.findByEmail(email);
+
+      if (!userFound) {
+        throw new NotFoundException('User not found');
+      }
+
+      return userFound;
+    } catch (error) {
+      throw new ExceptionHandler(error);
+    }
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
     try {
       await this.userRepository.update(id, updateUserDto);
@@ -123,6 +147,47 @@ export class UserService {
   async remove(id: string): Promise<void> {
     try {
       return await this.userRepository.remove(id);
+    } catch (error) {
+      throw new ExceptionHandler(error);
+    }
+  }
+
+  async generateOtp(email: string): Promise<void> {
+    try {
+      const user = await this.userRepository.findByEmail(email);
+
+      if (!user) {
+        throw new BadRequestException('User not found');
+      }
+
+      const otp = await UtilsShared.generateOtp();
+      const otpExpiration = new Date(Date.now() + 60 * 60 * 1000);
+
+      await this.userRepository.update(user.id, { otp, otpExpiration });
+
+      await this.notificationService.sendOtp(email, otp, 'es');
+
+      return;
+    } catch (error) {
+      throw new ExceptionHandler(error);
+    }
+  }
+
+  async validateOtp(email: string, otp: string): Promise<Partial<UserEntity>> {
+    try {
+      const user = await this.findByEmail(email);
+
+      if (!user || !user.otpExpiration || user.otp !== otp) {
+        throw new BadRequestException('Invalid OTP');
+      }
+
+      if (new Date() > user.otpExpiration) {
+        throw new BadRequestException('Invalid OTP');
+      }
+
+      await this.userRepository.update(user.id, { otp: null, otpExpiration: null });
+
+      return { copydrive: user.copydrive };
     } catch (error) {
       throw new ExceptionHandler(error);
     }

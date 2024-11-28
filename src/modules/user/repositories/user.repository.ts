@@ -30,6 +30,10 @@ export class UserRepository {
     return await this.repository.findOneBy({ id });
   }
 
+  async findByEmail(email: string): Promise<UserEntity | null> {
+    return await this.repository.findOneBy({ email });
+  }
+
   async update(id: string, updateData: Partial<UserEntity>): Promise<void> {
     const updateResult = await this.repository.update({ id }, updateData);
     if (updateResult.affected === 0) {

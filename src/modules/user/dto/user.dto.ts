@@ -30,3 +30,22 @@ export class UserDto {
 }
 
 export class UpdateUserDto extends PartialType(UserDto) {}
+
+export class GenerateOtpDto {
+  @ApiProperty()
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+}
+
+export class ValidateOtpDto {
+  @ApiProperty()
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  otp: string;
+}

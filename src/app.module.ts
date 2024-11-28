@@ -9,6 +9,7 @@ import { HttpCustomModule } from './shared/http/http.module';
 import { DatabaseConfig } from './config/database/database.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { MovementModule } from './modules/movement/movement.module';
+import { MailModule } from './shared/mail/mail.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { MovementModule } from './modules/movement/movement.module';
     AuthModule,
     UserModule,
     MovementModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [],

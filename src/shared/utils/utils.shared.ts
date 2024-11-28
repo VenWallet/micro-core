@@ -1,17 +1,13 @@
-const nearSEED = require('near-seed-phrase');
-
 export class UtilsShared {
   static validateEmail = (email: string) => {
     const regex = /\S+@\S+\.\S+/;
     return regex.test(email);
   };
 
-  static getIdNear = async (mnemonic: string) => {
-    const walletSeed = await nearSEED.parseSeedPhrase(mnemonic);
-    const split = String(walletSeed.publicKey).split(':');
-    const id = String(split[1]);
-    return id;
-  };
+  static generateOtp(): string {
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    return otp.toString();
+  }
 
   // static getLinkTransaction = (blockchain: string, transactionHash: string) => {
   //   switch (blockchain) {
