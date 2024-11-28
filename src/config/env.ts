@@ -28,6 +28,9 @@ export class EnvironmentVariables {
   JWT_SECRET!: string;
 
   @IsString()
+  MAIL_HOST!: string;
+
+  @IsString()
   MAIL_USER!: string;
 
   @IsString()

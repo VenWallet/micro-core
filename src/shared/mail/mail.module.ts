@@ -12,7 +12,9 @@ import { EnvironmentVariables } from 'src/config/env';
     MailerModule.forRootAsync({
       useFactory: async (config: ConfigService<EnvironmentVariables>) => ({
         transport: {
-          service: 'gmail',
+          host: config.get('MAIL_HOST'),
+          port: 587,
+          secure: false,
           auth: {
             user: config.get('MAIL_USER'),
             pass: config.get('MAIL_PASSWORD'),
