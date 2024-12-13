@@ -2,6 +2,7 @@ import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsNumber, IsEnum, IsOptional, IsDate } from 'class-validator';
 import { StatusEnum } from '../enums/status.enum';
 import { MovementTypeEnum } from '../enums/movementType.enum';
+import { Type } from 'class-transformer';
 
 export class MovementSchema {
   @ApiProperty()
@@ -15,6 +16,7 @@ export class MovementSchema {
   movementType: MovementTypeEnum;
 
   @ApiProperty()
+  @Type(() => Date)
   @IsDate()
   @IsNotEmpty()
   movementDate: Date;
