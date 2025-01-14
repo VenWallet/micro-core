@@ -23,4 +23,19 @@ export class EnvironmentVariables {
 
   @IsInt()
   PORT_ORM!: number;
+
+  @IsString()
+  JWT_SECRET!: string;
+
+  @IsString()
+  MAIL_HOST!: string;
+
+  @IsString()
+  MAIL_USER!: string;
+
+  @IsString()
+  MAIL_PASSWORD!: string;
+
+  @IsString()
+  MAIL_FROM!: string;
 }

@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, BadRequestException } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
-import { ImportUserDto, UpdateUserDto, UserDto } from './dto/user.dto';
+import { GenerateOtpDto, UpdateUserDto, UserDto, ValidateOtpDto } from './dto/user.dto';
 
 @ApiTags('User')
 @Controller('user')
@@ -13,10 +13,10 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @Post('import')
-  import(@Body() importUserDto: ImportUserDto) {
-    return this.userService.import(importUserDto);
-  }
+  // @Post('import')
+  // import(@Body() importUserDto: ImportUserDto) {
+  //   return this.userService.import(importUserDto);
+  // }
 
   @Get()
   findAll() {
@@ -36,5 +36,15 @@ export class UserController {
   @Delete(':id')
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.userService.remove(id);
+  }
+
+  @Post('generate-otp')
+  async generateOtp(@Body() generateOtpDto: GenerateOtpDto) {
+    return this.userService.generateOtp(generateOtpDto.email);
+  }
+
+  @Post('validate-otp')
+  async validateOtp(@Body() validateOtpDto: ValidateOtpDto) {
+    return await this.userService.validateOtp(validateOtpDto.email, validateOtpDto.otp);
   }
 }

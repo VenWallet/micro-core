@@ -5,7 +5,7 @@ import { IsString, IsNotEmpty, IsOptional, IsBoolean, IsEnum, IsNumber, IsEmail 
 export class UserDto {
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   username: string;
 
   @ApiProperty()
@@ -20,20 +20,32 @@ export class UserDto {
 
   @ApiProperty()
   @IsString()
+  @IsOptional()
+  copydrive: string;
+
+  @ApiProperty()
+  @IsString()
   @IsNotEmpty()
   mnemonic: string;
 }
 
 export class UpdateUserDto extends PartialType(UserDto) {}
 
-export class ImportUserDto {
+export class GenerateOtpDto {
   @ApiProperty()
-  @IsString()
+  @IsEmail()
   @IsNotEmpty()
-  mnemonic: string;
+  email: string;
+}
+
+export class ValidateOtpDto {
+  @ApiProperty()
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  userId: string;
+  otp: string;
 }
