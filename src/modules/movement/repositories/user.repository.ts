@@ -22,8 +22,74 @@ export class MovementRepository {
     return await this.repository.save(newEntity);
   }
 
-  async findByUserId(userId: string): Promise<MovementEntity[]> {
-    return await this.repository.find({ where: { userId } });
+  async findByUserId(
+    userId: string,
+    filters: {
+      status?: string;
+      fromNetwork?: string;
+      toNetwork?: string;
+      fromCoin?: string;
+      toCoin?: string;
+      movementType?: string;
+      currency?: string;
+      fromAccount?: string;
+      toAccount?: string;
+      startDate?: string;
+      endDate?: string;
+    },
+  ): Promise<MovementEntity[]> {
+    const query = this.repository.createQueryBuilder('movement').where('movement.userId = :userId', {
+      userId: userId,
+    });
+
+    if (filters.status) {
+      query.andWhere('movement.status = :status', { status: filters.status });
+    }
+
+    if (filters.fromNetwork) {
+      query.andWhere('movement.fromNetwork = :fromNetwork', { fromNetwork: filters.fromNetwork });
+    }
+
+    if (filters.toNetwork) {
+      query.andWhere('movement.toNetwork = :toNetwork', { toNetwork: filters.toNetwork });
+    }
+
+    if (filters.fromCoin) {
+      query.andWhere('movement.fromCoin = :fromCoin', { fromCoin: filters.fromCoin });
+    }
+
+    if (filters.toCoin) {
+      query.andWhere('movement.toCoin = :toCoin', { toCoin: filters.toCoin });
+    }
+
+    if (filters.movementType) {
+      query.andWhere('movement.movementType = :movementType', { movementType: filters.movementType });
+    }
+
+    if (filters.currency) {
+      query.andWhere('movement.currency = :currency', { currency: filters.currency });
+    }
+
+    if (filters.fromAccount) {
+      query.andWhere('movement.fromAccount = :fromAccount', { fromAccount: filters.fromAccount });
+    }
+
+    if (filters.toAccount) {
+      query.andWhere('movement.toAccount = :toAccount', { toAccount: filters.toAccount });
+    }
+
+    if (filters.startDate && filters.endDate) {
+      query.andWhere('movement.movementDate BETWEEN :startDate AND :endDate', {
+        startDate: filters.startDate,
+        endDate: filters.endDate,
+      });
+    } else if (filters.startDate) {
+      query.andWhere('movement.movementDate >= :startDate', { startDate: filters.startDate });
+    } else if (filters.endDate) {
+      query.andWhere('movement.movementDate <= :endDate', { endDate: filters.endDate });
+    }
+
+    return await query.getMany();
   }
 
   async findAll(): Promise<MovementEntity[]> {

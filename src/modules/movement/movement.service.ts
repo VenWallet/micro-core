@@ -17,9 +17,24 @@ export class MovementService {
     }
   }
 
-  async findByUserId(userId: string): Promise<MovementEntity[]> {
+  async findByUserId(
+    userId: string,
+    filters: {
+      status?: string;
+      fromNetwork?: string;
+      toNetwork?: string;
+      fromCoin?: string;
+      toCoin?: string;
+      movementType?: string;
+      currency?: string;
+      fromAccount?: string;
+      toAccount?: string;
+      startDate?: string;
+      endDate?: string;
+    },
+  ): Promise<MovementEntity[]> {
     try {
-      return await this.movementRepository.findByUserId(userId);
+      return await this.movementRepository.findByUserId(userId, filters);
     } catch (error) {
       throw new ExceptionHandler(error);
     }
