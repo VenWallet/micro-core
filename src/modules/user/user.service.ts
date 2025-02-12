@@ -192,4 +192,9 @@ export class UserService {
       throw new ExceptionHandler(error);
     }
   }
+
+  async userExists(email: string): Promise<boolean> {
+    const userFound = await this.userRepository.findByEmail(email);
+    return !!userFound;
+  }
 }
