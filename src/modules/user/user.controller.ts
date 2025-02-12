@@ -23,11 +23,6 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.userService.findOne(id);
-  }
-
   @Patch(':id')
   update(@Param('id', ParseUUIDPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
@@ -46,5 +41,15 @@ export class UserController {
   @Post('validate-otp')
   async validateOtp(@Body() validateOtpDto: ValidateOtpDto) {
     return await this.userService.validateOtp(validateOtpDto.email, validateOtpDto.otp);
+  }
+
+  @Get('exists/:email')
+  async userExists(@Param('email') email: string) {
+    return await this.userService.userExists(email);
+  }
+
+  @Get(':id')
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.userService.findOne(id);
   }
 }
