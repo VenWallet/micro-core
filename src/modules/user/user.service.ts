@@ -193,8 +193,8 @@ export class UserService {
     }
   }
 
-  async userExists(email: string): Promise<boolean> {
+  async userExists(email: string): Promise<{ exists: boolean }> {
     const userFound = await this.userRepository.findByEmail(email);
-    return !!userFound;
+    return { exists: !!userFound };
   }
 }
